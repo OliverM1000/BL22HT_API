@@ -32,7 +32,7 @@ function validateUser(user) {
         password: Joi.string().min(8).max(255).required(),
         first_name: Joi.string().min(3).max(20).required(),
         last_name: Joi.string().min(3).max(20).required(),
-        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
+        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: false } }).required(),
         created: Joi.date(),
         shipping_address: Joi.string().hex().length(24),
     });
