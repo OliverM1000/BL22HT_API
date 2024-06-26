@@ -26,9 +26,7 @@ router.get("/me", auth, async (req, res) => {
     const user = await User.findById(req.user._id)
         .populate("shipping_address", "-_id -user -__v")
         .select('-password');
-
-    console.log(user);
-
+    
     res.send(user);
 });
 
