@@ -21,8 +21,22 @@ router.get("/", auth, async (req, res) => {
 });
 
 
+/*
 router.get("/:tag", auth, async (req, res) => {
     const sampleFrame = await SampleFrame.find({ user: req.user._id, tag: req.params.tag });
+    if (!sampleFrame) return res.status(404).send("Invalid Sample-Frame TAG.");
+    res.send(sampleFrame);
+});
+*/
+
+
+router.get("/:tag", async (req, res) => {
+    const sampleFrame = await SampleFrame
+    .findOne({ tag: req.params.tag })
+    .populate({path: 'user'})
+    .populate({ path: 'samplePlateL', populate: { path: 'samples', populate: { path: 'scanSetups' } } })
+    .populate({ path: 'samplePlateR', populate: { path: 'samples', populate: { path: 'scanSetups' } } });
+    
     if (!sampleFrame) return res.status(404).send("Invalid Sample-Frame TAG.");
     res.send(sampleFrame);
 });
