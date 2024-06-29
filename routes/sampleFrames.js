@@ -33,7 +33,7 @@ router.get("/:tag", auth, async (req, res) => {
 router.get("/:tag", async (req, res) => {
     const sampleFrame = await SampleFrame
     .findOne({ tag: req.params.tag })
-    .populate({path: 'user'}).select('-password')
+    .populate({path: 'user', select: {"first_name" :1,  "last_name" :1, "email" : 1}})
     .populate({ path: 'samplePlateL', populate: { path: 'samples', populate: { path: 'scanSetups' } } })
     .populate({ path: 'samplePlateR', populate: { path: 'samples', populate: { path: 'scanSetups' } } });
     
