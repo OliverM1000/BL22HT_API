@@ -12,6 +12,7 @@ const scanSetups = require('./routes/scanSetups');
 const home = require('./routes/home');
 const auth = require('./routes/auth');
 const create = require('./routes/create');
+const xasData = require('./routes/xasData');
 
 if (!config.get('jwtPrivateKey')) {
   console.log("FATAL ERROR: jwtPrivateKey is not defined!");
@@ -45,6 +46,7 @@ app.use('/api/samples/', samples);
 app.use('/api/scanSetups/', scanSetups);
 app.use('/api/auth', auth);
 app.use('/api/create', create);
+app.use('/api/xasData', xasData);
 app.use('/', home);
 
 
