@@ -65,3 +65,6 @@ router.post("/", auth, async(req, res) => {
     xasData = await xasData.save();
     res.send(_.pick(xasData, ['_id', 'sample', 'scanSetup']));
 });
+
+
+module.exports = router;
