@@ -36,7 +36,7 @@ mongoose.connect(`mongodb+srv://${mongoDbKey}@bl22ht-db.8ffubyh.mongodb.net/?ret
   .then(() => console.log('Connected to MongoDB...'))
   .catch(err => console.error('Could not connect to MongoDB.'));
 
-app.use(express.json());
+app.use(express.json({limit: '10Mb'}));
 app.use(helmet());
 
 app.use('/api/users/', users);
