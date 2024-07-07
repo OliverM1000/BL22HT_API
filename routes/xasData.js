@@ -24,6 +24,22 @@ router.get("/:id", auth, async(req, res) => {
 });
 
 
+router.get("/:sample/:scan", auth, async(req, res) => {
+    let user = await User.findById(req.user._id).select('-password');
+    if (!user) return res.status(404).send("Invalid User ID.");
+
+    const xasData = await XasData
+    .findOne({sample: req.params.sample, scanSetup: req.params.scan})
+    .populate({ path: 'sample'})
+    .populate({ path: 'scanSetup'});
+
+    if(!xasData) return res.status(400).send("Inconsistend data.");
+
+    res.send(xasData);
+});
+
+
+
 router.post("/", auth, async(req, res) => {
     let user = await User.findById(req.user._id).select('-password');
     if (!user) return res.status(404).send("Invalid User ID.");
