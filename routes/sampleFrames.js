@@ -31,8 +31,11 @@ router.get("/:tag", auth, async (req, res) => {
 
 
 router.get("/:tag", auth, async (req, res) => {
+    let user = await User.findById(req.user._id).select('-password');
+    if (!user) return res.status(404).send("Invalid User ID.");
+
     const sampleFrame = await SampleFrame
-    .findOne({ tag: req.params.tag })
+    .findOne({user: req.user._id, committed: true, tag: req.params.tag })
     .populate({ path: 'user', select: { "_id": 0, "first_name": 1,  "last_name": 1, "email": 1}})
     .populate({ path: 'samplePlateL', populate: { path: 'samples', populate: { path: 'scanSetups' } } })
     .populate({ path: 'samplePlateR', populate: { path: 'samples', populate: { path: 'scanSetups' } } });
