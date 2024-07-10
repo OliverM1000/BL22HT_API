@@ -53,8 +53,6 @@ router.get("/count/:sample/:scan", auth, async(req, res) => {
 });
 
 
-
-
 router.post("/", auth, async(req, res) => {
     let user = await User.findById(req.user._id).select('-password');
     if (!user) return res.status(404).send("Invalid User ID.");

@@ -11,35 +11,43 @@ router.get("/", auth, async (req, res) => {
     let user = await User.findById(req.user._id).select('-password');
     if (!user) return res.status(404).send("Invalid User ID.");
 
-    const sampleFrames = await SampleFrame
+    if(user.isAdmin) {
+        const sampleFrames = await SampleFrame
+        .find({ committed: true })
+        .populate({ path: 'samplePlateL', populate: { path: 'samples', populate: { path: 'scanSetups' } } })
+        .populate({ path: 'samplePlateR', populate: { path: 'samples', populate: { path: 'scanSetups' } } });        
+    }
+    else {
+        const sampleFrames = await SampleFrame
         .find({ user: req.user._id, committed: true })
         .populate({ path: 'samplePlateL', populate: { path: 'samples', populate: { path: 'scanSetups' } } })
-        .populate({ path: 'samplePlateR', populate: { path: 'samples', populate: { path: 'scanSetups' } } });
-    if (!sampleFrames) return res.status(400).send("Inconsistent data.");
+        .populate({ path: 'samplePlateR', populate: { path: 'samples', populate: { path: 'scanSetups' } } });        
+    }
 
+    if (!sampleFrames) return res.status(400).send("Inconsistent data.");
     res.send(sampleFrames);
 });
-
-
-/*
-router.get("/:tag", auth, async (req, res) => {
-    const sampleFrame = await SampleFrame.find({ user: req.user._id, tag: req.params.tag });
-    if (!sampleFrame) return res.status(404).send("Invalid Sample-Frame TAG.");
-    res.send(sampleFrame);
-});
-*/
-
 
 router.get("/:tag", auth, async (req, res) => {
     let user = await User.findById(req.user._id).select('-password');
     if (!user) return res.status(404).send("Invalid User ID.");
 
-    const sampleFrame = await SampleFrame
-    .findOne({user: req.user._id, committed: true, tag: req.params.tag })
-    .populate({ path: 'user', select: { "_id": 0, "first_name": 1,  "last_name": 1, "email": 1}})
-    .populate({ path: 'samplePlateL', populate: { path: 'samples', populate: { path: 'scanSetups' } } })
-    .populate({ path: 'samplePlateR', populate: { path: 'samples', populate: { path: 'scanSetups' } } });
-    
+
+    if(user.isAdmin){
+        const sampleFrame = await SampleFrame
+        .findOne({ committed: true, tag: req.params.tag })
+        .populate({ path: 'user', select: { "_id": 0, "first_name": 1,  "last_name": 1, "email": 1}})
+        .populate({ path: 'samplePlateL', populate: { path: 'samples', populate: { path: 'scanSetups' } } })
+        .populate({ path: 'samplePlateR', populate: { path: 'samples', populate: { path: 'scanSetups' } } });
+    }
+    else {
+        const sampleFrame = await SampleFrame
+        .findOne({ user: req.user._id, committed: true, tag: req.params.tag })
+        .populate({ path: 'user', select: { "_id": 0, "first_name": 1,  "last_name": 1, "email": 1}})
+        .populate({ path: 'samplePlateL', populate: { path: 'samples', populate: { path: 'scanSetups' } } })
+        .populate({ path: 'samplePlateR', populate: { path: 'samples', populate: { path: 'scanSetups' } } });
+    }
+
     if (!sampleFrame) return res.status(404).send("Invalid Sample-Frame TAG.");
     res.send(sampleFrame);
 });
@@ -51,9 +59,6 @@ router.post("/", auth, async (req, res) => {
 
     let sampleFrame = await SampleFrame.findOne({ tag: req.body.tag });
     if (sampleFrame) return res.status(400).send("Sample-Frame already registered.");
-
-    //const user = await User.findById(req.body.user);
-    //if (!user) return res.status(400).send("Invalid User.");
 
     if (req.body.samplePlateL) {
         const samplePlateL = await SamplePlate.findById(req.body.samplePlateL);
