@@ -23,8 +23,33 @@ const XasData = new mongoose.model('XasData', new mongoose.Schema({
     adc3: [{ type: Number }],
     adc4: [{ type: Number }],
     time: [{ type: Number }],
-    gate: [{ type: Number }]
+    gate: [{ type: Number }],    
 }));
+
+const XasMetaData = new mongoose.model('XasMetaData', new mongoose.Schema({
+    slitVertical: {type: Number},
+    slitHorizontal: {type: Number},    
+    monoDetune: {type, Number},
+    ic_0 : { type: mongoose.Schema.Types.ObjectId, ref: 'IcMetaData', default: null },
+    ic_1 : { type: mongoose.Schema.Types.ObjectId, ref: 'IcMetaData', default: null },
+    ic_2 : { type: mongoose.Schema.Types.ObjectId, ref: 'IcMetaData', default: null },
+}));
+
+const IcMetaData = new mongoose.model('IcMetaData', new mongoose.Schema({
+    gas1: {type: String},    
+    gas2: {type: String},
+
+    gas1P: {type: Number},
+    gas2P: {type: Number},
+
+    ampGain: { type: String},
+    ampOffset: { type: String},
+
+    voltage: {type: Number},
+}));
+
+
+
 
 
 function validateXasData(xasData){
