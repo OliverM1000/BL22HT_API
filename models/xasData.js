@@ -29,7 +29,7 @@ const XasData = new mongoose.model('XasData', new mongoose.Schema({
 const XasMetaData = new mongoose.model('XasMetaData', new mongoose.Schema({
     slitVertical: {type: Number},
     slitHorizontal: {type: Number},    
-    monoDetune: {type, Number},
+    monoDetune: {type: Number},
     ic_0 : { type: mongoose.Schema.Types.ObjectId, ref: 'IcMetaData', default: null },
     ic_1 : { type: mongoose.Schema.Types.ObjectId, ref: 'IcMetaData', default: null },
     ic_2 : { type: mongoose.Schema.Types.ObjectId, ref: 'IcMetaData', default: null },
