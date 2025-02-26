@@ -22,16 +22,19 @@ router.get("/tag", (req, res) => {
 
 
 router.get("/frame", auth, async (req, res) => {
+    // Find an uncommited SampleFrame.
+    // If no uncommited SampleFrame exist, create a new one.
+    
     let frame = await SampleFrame
         .findOne({ user: req.user._id, committed: false })
         .populate({ path: 'samplePlateL', populate: { path: 'samples', populate: { path: 'scanSetups' } } })
         .populate({ path: 'samplePlateR', populate: { path: 'samples', populate: { path: 'scanSetups' } } });
     if (frame) return res.send(frame);
 
-    const uid = new ShortUniqueId({ length: 6, dictionary: "alpha_upper" });
-    const tag = uid.formattedUUID("$r4-$r4");
+    //const uid = new ShortUniqueId({ length: 6, dictionary: "alpha_upper" });
+    //const tag = uid.formattedUUID("$r4-$r4");
     frame = {
-        tag: tag,
+        tag: "0000-0000",
         user: req.user._id,
         samplePlateL: null,
         samplePlateR: null,
