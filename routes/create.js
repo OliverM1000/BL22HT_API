@@ -23,7 +23,7 @@ router.get("/tag", (req, res) => {
 
 router.get("/frame", auth, async (req, res) => {
     // Find an uncommited SampleFrame.
-    // If no uncommited SampleFrame exist, create a new one.
+    // If no uncommited SampleFrame exists, create a new one.
     
     let frame = await SampleFrame
         .findOne({ user: req.user._id, committed: false })
@@ -34,7 +34,7 @@ router.get("/frame", auth, async (req, res) => {
     //const uid = new ShortUniqueId({ length: 6, dictionary: "alpha_upper" });
     //const tag = uid.formattedUUID("$r4-$r4");
     frame = {
-        tag: "0000-0000",
+        tag: "AAAA-AAAA",
         user: req.user._id,
         samplePlateL: null,
         samplePlateR: null,
