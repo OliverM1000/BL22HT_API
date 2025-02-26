@@ -61,13 +61,10 @@ router.get("/isUnique/:tag", auth, async (req, res) => {
     let user = await User.findById(req.user._id).select('-password');
     if (!user) return res.status(404).send("Invalid User ID.");
 
-
     let sampleFrame;
-    sampleFrame = await SampleFrame
-    .findOne({ tag: req.params.tag });
+    sampleFrame = await SampleFrame.findOne({ tag: req.params.tag });
 
-    if(sampleFrame){res.send({"isUnique":"false"})}
-    else{res.send({"isUnique":"true"})}
+    res.send({"tag": sampleFrame.tag, "isUnique": sampleFrame? false:true});    
 });
 
 
