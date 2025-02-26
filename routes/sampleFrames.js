@@ -64,7 +64,7 @@ router.get("/isUnique/:tag", auth, async (req, res) => {
     let sampleFrame;
     sampleFrame = await SampleFrame.findOne({ tag: req.params.tag });
 
-    res.send({"tag": sampleFrame.tag, "isUnique": sampleFrame? false:true});    
+    res.send({"tag": req.params.tag, "isUnique": sampleFrame ? false : true});    
 });
 
 
