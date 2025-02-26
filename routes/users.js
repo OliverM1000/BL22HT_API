@@ -1,6 +1,7 @@
 const admin = require("../middleware/admin");
 const auth = require('../middleware/auth');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const _ = require('lodash');
 const { User, validate: validateUser } = require("../models/user");
 const { Address, validate: validateAddress, address } = require("../models/address");
